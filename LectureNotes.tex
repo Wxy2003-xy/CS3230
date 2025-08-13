@@ -41,13 +41,12 @@
 \maketitle
 \section{Definition}
 \begin{align*}
-    &O(g): \{f: \exists c \> 0 \land n_0 \> 0, \forall n \leq n_0, 0 \leq f(n) \leq c \cdot g(n)\} \\
-    &\Omega(g): \{f: \exists c \> 0 \land n_0 \> 0, \forall n \leq n_0, 0 \leq c \cdot g(n) \leq f(n)\} \\
-    &\Theta(g): \{f: \exists c_1, c_2 \> 0 \land n_0 \> 0, \forall n \leq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\} \\
+    &O(g): \{f: \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot g(n)\} \\
+    &\Omega(g): \{f: \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq c \cdot g(n) \leq f(n)\} \\
+    &\Theta(g): \{f: \exists c_1, c_2 > 0 \land n_0 > 0, \forall n \geq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\} \\
     %
-    &o(g): \{f: \forall c \> 0, \forall n \leq n_0, 0 \leq f(n) < c \cdot g(n)\} \\ 
-    &\omega(g): \{f: \forall c \> 0, \forall n \leq n_0, 0 \leq c \cdot g(n) < f(n)\} \\
-    &\theta(g): \{f: \exists c_1, c_2 \> 0 \land n_0 \> 0, \forall n \leq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\} 
+    &o(g): \{f: \forall c > 0, \exists n_0 > 0, \forall n \geq n_0, 0 \leq f(n) < c \cdot g(n)\} \\ 
+    &\omega(g): \{f: \forall c > 0, \forall n \leq n_0, 0 \leq c \cdot g(n) < f(n)\} \\
 \end{align*}
 \section{Proof with limit}
 
@@ -55,25 +54,103 @@
 
 \[\Theta(f) = O(f) \cap \Omega(f)\]
 \begin{proof}
-    1. prove: $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\   
-    From definition: 
+    1. prove: $O(f) \cap \Omega(f) \subseteq \Theta(f) $\\  
+    From definition: \\
     \begin{align*}
         &\Theta(f(n)): \{g: \exists c_1, c_2 > 0, \exists n_0 \geq 0, \forall n \geq n_0, c_1 \cdot f(n) \leq g(n) \leq c_2 \cdot f(n)\}\\
-        &O(f(n)) \cap \Omega(f(n)): \{g: \exists c_1 > 0, \exists n_1 \geq 0, \forall n \geq n_1, 0 \leq g(n) \leq c_1 \cdot f(n) \land \exists c_2 > 0, \exists n_2 \geq 0, \forall n \geq n_2, 0 \leq c_2 \cdot f(n) \leq g(n)\}
+        &O(f(n)) \cap \Omega(f(n)): \{g: \exists c_1 > 0, \exists n_1 \geq 0, \forall n \geq n_1, 0 \leq g(n) \leq c_1 \cdot f(n) \land 
+        \exists c_2 > 0, \exists n_2 \geq 0, \forall n \geq n_2, 0 \leq c_2 \cdot f(n) \leq g(n)\}
     \end{align*}
     When $0 \leq c_1 \leq c_2, O(f(n)) \cap \Omega(f(n)): 
     \{g: \exists n_1, n_2 \geq 0, \forall n \geq \{\max(n_1, n_2)\}, 0 \leq c_1 f(n) \leq g(n) \leq c_2 f(n)\}$\\
-    $\implies $ $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\ 
+    $\implies $ $O(f) \cap \Omega(f) \subseteq \Theta(f) $\\  
+    2. prove: $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\ 
+    $(f(n) > 0 \land, c_1 \leq, c_2) \implies (0 \leq c_1 f(n) \leq g(n) \land 0 \leq g(n) \leq c_2 f(n))$\\ 
+    $\implies $  $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\ 
+    $\implies $  $\Theta(f) = O(f) \cap \Omega(f)$\\ 
 
-    2. prove: $O(f) \cap \Omega(f) \subseteq \Theta(f) $\\
-    When 
 
 \end{proof}
-
-\[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \implies f(n) \in O(g(n))\]
+\[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 0 \implies f(n) \in o(g(n))\]
 \begin{proof}
-    \[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \iff \lim_{n \rightarrow \infty} \frac{g(n)}{f(n)} = 0\]
-    By definition of limit, $\forall \epsilon > 0, \exists n_0 \geq n,$ 
+    From lmit definition, $\forall \epsilon > 0, \exists n_0 \geq 0, 
+    \forall n \geq n_0, \frac{f(n)}{g(n)} < \epsilon$. Let $c = \epsilon, 
+    \frac{f(n)}{g(n)} < \epsilon, f(n) < c \cdot g(n)$. $f(n) \geq 0, f(n) \in o(g(n))$
 \end{proof}
+\[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \implies f(n) \in \omega(g(n))\]
+\begin{proof}
+    From $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \iff \lim_{n \rightarrow \infty} \frac{g(n)}{f(n)} = 0$, as \\
+    $\lim_{x \rightarrow \infty} \frac{1}{f(x)} = \frac{1}{\lim_{x\to\infty} f(x)}, \lim_{n \rightarrow \infty} \frac{g(n)}{f(n)} = \frac{1}{\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)}} = \frac{1}{\infty} = 0$.\\
+    Similarly, $\forall \epsilon > 0, \exists n_0 \geq 0, 
+    \forall n \geq n_0, \frac{g(n)}{f(n)} < \epsilon$. Let $c = \frac{1}{\epsilon}, 
+    \frac{g(n)}{f(n)} < \epsilon, c \cdot g(n) < f(n)$.\\
+\end{proof}
+\[0 < \lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} < \infty \implies f(n) \in \Theta(g(n))\]
+\begin{proof}
+    Definitions:\\
+    $\Theta(g): \{f: \exists c_1, c_2 > 0 \land n_0 > 0, \forall n \geq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\}$\\
+    $O(g): \{f: \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot g(n)\}$ \\
+    $o(g): \{f: \forall c > 0, \exists n_0 > 0, \forall n \geq n_0, 0 \leq f(n) < c \cdot g(n)\}$\\
+    Prove: $\Theta(f) = O(f) \setminus o(f)$
+    \begin{proof}
+        1. $\Theta(f) \subseteq O(f) \setminus o(f)$\\
+            Suppose $g(n) \in \Theta(f), \Theta(f) = O(f) \cap \Omega(f) \implies g(n) \in O(f)$. \\
+            Suppose $g(n) \in o(f), (\exists c_1, c_2 > 0, \exists n_1 > 0, \forall n \geq n_1, 0 \leq c_1 \cdot f(n) \leq g(n) \leq c_2 \cdot f(n)) \land (\forall c_3 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq g(n) < c_3 \cdot f(n))$\\
+            Let $c_3 < c_1, c_1 \cdot f(n) \leq g(n) < c_3 \cdot f(n)$, contradiction, \\
+            $\implies g(n) \in \Theta(f) \rightarrow g(n) \notin o(f)$\\
+            $\implies \Theta(f) \subseteq O(f) \setminus o(f)$\\
+        2. \[O(f) \setminus o(f) \subseteq \Theta(f) = \]
+            \[
+            \begin{aligned}
+            \{g:\ & (\exists c_1 > 0, \exists n_1 > 0, \forall n \geq n_1,\ 0 \leq g(n) \leq c_1 \cdot f(n)) \\
+                & \land\ \neg(\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2,\ 0 \leq g(n) < c_2 \cdot f(n)) \} \\[0.5em]
+            \{g:\ & (\exists c_1 > 0, \exists n_1 > 0, \forall n \geq n_1,\ 0 \leq g(n) \leq c_1 \cdot f(n)) \\
+                & \land\ (\exists c_2 > 0, \forall n_2 > 0, \exists n \geq n_2,\ (g(n) < 0 \lor g(n) \geq c_2 \cdot f(n))) \} \\[0.5em]
+            \{g:\ & \exists c_1 > c_2 > 0, \forall n_2 > 0, \exists n_1 \geq n_2, \forall n \geq n_1,\ 0 \leq c_2 \cdot f(n) \leq g(n) \leq c_1 \cdot f(n) \} \\[0.5em]
+            \{g:\ & \exists c_1 > c_2 > 0, \exists n_0 > 0, \forall n \geq n_0,\ 0 \leq c_2 \cdot f(n) \leq g(n) \leq c_1 \cdot f(n) \}
+            \end{aligned}
+            \]
+    \end{proof}
+\end{proof}
+
+
+
+
+\section{Reflexivity}
+\subsection{$f(n)\in O(f(n))$}
+\begin{proof}
+    Suppose $f(n) > 0$\\
+    Let $c = 1, n_0 = 1, \forall n \geq n_0, 0 \leq f(n) \leq f(n), \implies f(n) \in O(f(n))$
+\end{proof}
+\subsection{$f(n) \in \Omega(f(n))$, $f(n) \in \Theta(f(n))$}
+Similarly, by picking the right $c$ and $n_0$ it's easy to prove existential statements.
+
+\section{Transitivity}
+\subsection{$f(n) \in O(g(n)) \land g(n) \in O(h(n)) \implies f(n) \in O(h(n))$}
+\begin{proof}
+    \begin{align*}
+        &\exists c_1 > 0, n_1 > 0, \forall n \geq n_1, 0 \leq f(n) \leq c_1 \cdot g(n)\\
+        &\exists c_2 > 0, n_2 > 0, \forall n \geq n_2, 0 \leq g(n) \leq c_2 \cdot h(n)
+    \end{align*}
+    Let $c_1 = 1, n_0 = \max(n_1, n_2)$, $0 \leq f(n) \leq g(n) \leq c_2 \cdot h(n) \implies \exists c_2 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c_2 \cdot h(n)$\\
+    $\implies f(n) \in O(h(n))$  
+\end{proof}
+\subsection{$f(n) \in \Omega(g(n)) \land g(n) \in \Omega(h(n)) \implies f(n) \in \Omega(h(n))$}
+Similar to $O(f(n))$ proof
+\subsection{$f(n) \in \Theta(g(n)) \land g(n) \in \Theta(h(n)) \implies f(n) \in \Theta(h(n))$}
+\begin{align*}
+    &\exists c_1^{[1]}, c_2^{[1]}> 0, n_1 > 0, \forall n \geq n_1, 0 \leq c_1^{[1]} \cdot g(n) \leq f(n) \leq c_2^{[1]} \cdot g(n)\\
+    &\exists c_1^{[2]}, c_2^{[2]} > 0, n_2 > 0, \forall n \geq n_2, 0 \leq c_1^{[2]} \cdot h(n) \leq g(n) \leq c_2^{[2]} \cdot h(n)
+\end{align*}
+Let $c_1^{[1]} = c_2^{[1]} = 1, f(n) = g(n), $\\
+$0 \leq c_1^{[2]} \cdot h(n) \leq f(n) \leq c_2^{[2]} \cdot h(n) \implies f(n) \in \Theta(h(n))$
+\subsection{$f(n) \in o(g(n)) \land g(n) \in o(h(n)) \implies f(n) \in o(h(n))$}
+\begin{proof}
+    \begin{align*}
+        &\forall c_1 > 0, \exists n_1 > 0, \forall n \geq n_1, 0 \leq f(n) < c_1 \cdot g(n)\\
+        &\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq g(n) < c_2 \cdot h(n)
+    \end{align*}
+\end{proof}
+
 
 \end{document}
