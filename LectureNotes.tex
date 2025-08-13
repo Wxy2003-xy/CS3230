@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}    % For UTF-8 character encoding
+\usepackage[T1]{fontenc}       % For proper font encoding
+\usepackage{lmodern}           % Improved font rendering
+\usepackage{amsmath}   % For advanced mathematical formatting
+\usepackage{amssymb}   % For mathematical symbols
+\usepackage{geometry}  % Adjust page margins
+\usepackage{enumerate} % For custom lists
+\usepackage{xcolor}  % for coloring
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\usepackage{listings}  % for code listings
+
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,   
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{brown},
+  stringstyle=\color{orange},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+
+\begin{document}
+
+\title{Lecture 1: Asymptotic Analysis}
+\author{Wang Xiyu}
+\date{}
+\maketitle
+\section{Definition}
+\begin{align*}
+    &O(g): \{f: \exists c \> 0 \land n_0 \> 0, \forall n \leq n_0, 0 \leq f(n) \leq c \cdot g(n)\} \\
+    &\Omega(g): \{f: \exists c \> 0 \land n_0 \> 0, \forall n \leq n_0, 0 \leq c \cdot g(n) \leq f(n)\} \\
+    &\Theta(g): \{f: \exists c_1, c_2 \> 0 \land n_0 \> 0, \forall n \leq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\} \\
+    %
+    &o(g): \{f: \forall c \> 0, \forall n \leq n_0, 0 \leq f(n) < c \cdot g(n)\} \\ 
+    &\omega(g): \{f: \forall c \> 0, \forall n \leq n_0, 0 \leq c \cdot g(n) < f(n)\} \\
+    &\theta(g): \{f: \exists c_1, c_2 \> 0 \land n_0 \> 0, \forall n \leq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\} 
+\end{align*}
+\section{Proof with limit}
+
+\section{Secondary conclusions}
+
+\[\Theta(f) = O(f) \cap \Omega(f)\]
+\begin{proof}
+    1. prove: $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\   
+    From definition: 
+    \begin{align*}
+        &\Theta(f(n)): \{g: \exists c_1, c_2 > 0, \exists n_0 \geq 0, \forall n \geq n_0, c_1 \cdot f(n) \leq g(n) \leq c_2 \cdot f(n)\}\\
+        &O(f(n)) \cap \Omega(f(n)): \{g: \exists c_1 > 0, \exists n_1 \geq 0, \forall n \geq n_1, 0 \leq g(n) \leq c_1 \cdot f(n) \land \exists c_2 > 0, \exists n_2 \geq 0, \forall n \geq n_2, 0 \leq c_2 \cdot f(n) \leq g(n)\}
+    \end{align*}
+    When $0 \leq c_1 \leq c_2, O(f(n)) \cap \Omega(f(n)): 
+    \{g: \exists n_1, n_2 \geq 0, \forall n \geq \{\max(n_1, n_2)\}, 0 \leq c_1 f(n) \leq g(n) \leq c_2 f(n)\}$\\
+    $\implies $ $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\ 
+
+    2. prove: $O(f) \cap \Omega(f) \subseteq \Theta(f) $\\
+    When 
+
+\end{proof}
+
+\[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \implies f(n) \in O(g(n))\]
+\begin{proof}
+    \[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \iff \lim_{n \rightarrow \infty} \frac{g(n)}{f(n)} = 0\]
+    By definition of limit, $\forall \epsilon > 0, \exists n_0 \geq n,$ 
+\end{proof}
+
+\end{document}
