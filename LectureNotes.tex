@@ -143,11 +143,127 @@ Let $c_1^{[1]} = c_2^{[1]} = 1, f(n) = g(n), $\\
 $0 \leq c_1^{[2]} \cdot h(n) \leq f(n) \leq c_2^{[2]} \cdot h(n) \implies f(n) \in \Theta(h(n))$
 \subsection{$f(n) \in o(g(n)) \land g(n) \in o(h(n)) \implies f(n) \in o(h(n))$}
 \begin{proof}
-    \begin{align*}
+    \begin{align}
         &\forall c_1 > 0, \exists n_1 > 0, \forall n \geq n_1, 0 \leq f(n) < c_1 \cdot g(n)\\
         &\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq g(n) < c_2 \cdot h(n)
+    \end{align}
+From  (2), $\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq c_1 \cdot g(n) < c_1 \cdot c_2 \cdot h(n)$
+    \begin{align*}
+        &\forall c_1, c_2 > 0, \exists n_1, n_2 > 0, \forall n \geq \max(n_1, n_2), 0 \leq f(n) < c_1 \cdot g(n) < c_1 \cdot c_2 \cdot h(n)
+    \end{align*}
+    \[\forall c_1, c_2 > 0, \exists n_1, n_2 > 0, \forall n \geq \max(n_1, n_2), 0 \leq f(n) < c_1 \cdot c_2 \cdot h(n)\]
+\end{proof}
+
+\subsection{$f(n) \in \omega(g(n) \land g(n) \in \omega(h(n))) \implies f(n) \in \omega(h(n))$}
+    \begin{align*}
+        &\forall c_1 > 0, \exists n_1 > 0, \forall n \geq n_1, 0 \leq c_1 \cdot g(n) < f(n)\\
+        &\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq c_2 \cdot h(n) < g(n)
+    \end{align*}
+    \[\forall c_1, c_2 > 0, \exists n_1, n_2 > 0, \geq \max(n_1, n_2), 0 \leq c_1 \cdot c_2 \cdot h(n) < c_1 \cdot g(n) < f(n)\]
+\section{Symmetry: $f(n) \in \Theta(g(n)) \iff g(n)\in \Theta(f(n))$}
+\begin{proof}
+    \begin{align*}
+        & f(n) \in \Theta(g(n)) \implies\\
+        &\exists c_1, c_2> 0, n_1 > 0, \forall n \geq n_1, 0 \leq c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) \implies\\
+        & \left(0 \leq g(n) \leq \frac{1}{c_1}\cdot f(n) \leq \frac{c_2}{c_1}\cdot g(n)\right) \land \left( 0 \leq \frac{c_1}{c_2} \cdot g(n) \leq \frac{1}{c_2} \cdot f(n) \leq g(n)\right) \implies \\
+        & 0 \leq \frac{1}{c_2} \cdot f(n) \leq g(n) \leq \frac{1}{c_1}\cdot f(n)\\
+    \end{align*}
+    Identical proof for the other direction
+\end{proof}
+\section{Complementary}
+\subsection{$f(n) \in O(g(n) \iff g(n) \in \Omega(f(n)))$}
+\begin{proof}
+    \begin{align*}
+        & f(n) \in O(g(n)) \implies \\
+        & \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot g(n) \implies \\
+        & 0 \leq \frac{1}{c}\cdot f(n) \leq g(n)
+    \end{align*}
+Proof for the other direction and the next statement are identical.
+\end{proof}
+\subsection{$f(n) \in o(g(n) \iff g(n) \in \omega(f(n)))$}
+
+\section{Problems}
+\subsection*{$3^{n + 1} \in O(3^n)$}
+\begin{proof}
+    \begin{align*}
+        & 3^{n+ 1} = 3 \cdot 3^n\\
+        & let c = 4, n_0 = 1, \forall n \geq n_0, \\
+        & 3^{n+1} < c\cdot 3^n
+    \end{align*}
+\end{proof}
+\subsection*{$4^n \notin O(2^n)$}
+\begin{proof}
+    Suppose $f(n) = 4^n \in O(2^n)$,\\
+    \begin{align*}
+        & \exists c > 0, n_0 > 0, \forall n \geq n_0, 0 \leq 2^{2 \times n} \leq c\cdot 2^n \implies\\
+        & 0 \leq 2^n \leq c\\
+        & 0 \leq n \leq \log_2c (const)\\
+        & \text{n is upper bounded by a constant, a contradiction}
+    \end{align*}
+\end{proof}
+\subsection*{$2^{\lfloor \log_2n \rfloor} \in \Theta(n)$}
+\begin{proof}
+    \begin{align*}
+        & \text{Let } k = \lfloor \log_2 n\rfloor, 2^k \leq n < 2^{k+1} = 2 \cdot 2^k\\
+        & \text{Let } c_1 = \frac{1}{2}, c_2 = 1, n_0 = 2, \\
+        & \frac{n}{2} < 2^k \leq n
     \end{align*}
 \end{proof}
 
+\subsection*{For constant $i$, $a > 0$, $(n + a)^i \in O(n^i)$}
+\begin{proof}
+    \begin{align*}
+        & \forall a > 0, \exists n_0 > a, \forall n \geq n_0, f(n) = (n + a)^i \leq (2n)^i = 2^i \cdot n^i, \\
+        &\text{Let } c = 2^i, n_0 = a + 1, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot n^i
+    \end{align*}
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \in O(n)$}
+\begin{proof}
+    Let $c = 2, n_0 = 2, \forall n \geq n_0, 2^{\log_2n} = n \implies 0 \leq n \leq 2n$
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \in \Omega(n)$}
+\begin{proof}
+    Let $c = 0.5, n_0 = 2, \forall n \geq n_0, 2^{\log_2n} = n \implies 0 \leq 0.5n \leq n$
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \notin \Theta(\sqrt{n})$}
+\begin{proof}
+    Suppose otherwise, $\exists c_1, c_2 > 0, n_0 > 0, \forall n \geq n_0, 0 \leq c_1 \cdot \sqrt{n} \leq n \leq c_2 \sqrt{n}$,\\
+    \begin{align*}
+        & c_1 \leq \sqrt{n} \leq c_2\\
+        & \text{However, } \lim_{n \rightarrow \infty} \sqrt{n}= \infty, \text{ thus cannot be bound by constant } c_2, \text{a contradiction.}
+    \end{align*}
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \notin \omega(n)$}
+\begin{proof}
+    Suppose otherwise, $\forall c > 0, \exists n_0 > 0, \forall n \geq n_0, 0 \leq c\cdot n < n$. When $c = 2, \forall n_0 > 0, \forall n \geq n_0, 2n \geq n$, a contradiction.
+\end{proof}
 
+\subsection*{Rank order of growth}
+\subsubsection*{$f_1(n) = \log n$}
+By reflexivity, 
+\[f_1(n) \in \Theta(\log n)\]
+\subsubsection*{$f_2(n) = n!$}
+By reflexivity, 
+\[f_2(n) \in \Theta(n!)\]
+\subsubsection*{$f_3(n) = 2^n + n$}
+\[f_3(n) \in \Theta(2^n)\]
+\begin{proof}
+    
+\end{proof}
+\subsubsection*{$f_4(n) = n^{2.3} + 16n$}
+\[f_4(n) \in \Theta(n^{2.3})\]
+\begin{proof}
+    
+\end{proof}
+\subsubsection*{$f_5(n) = \log(n^{2})$}
+\[f_5(n) \in \Theta(\log(n))\]
+\begin{proof}
+    Assume base 2, $f_5(n) = \log(n^2) = 2\log(n)$, let $c_1 = 1, c_2 = 3, n_0 = 2, \\ \forall n \geq n_0, 0 \leq \log(n) \leq \log(n) \leq 3\log(n)$
+\end{proof}
+\[\Theta(\log(n)) = o(n^{2.3}) = o(2^n) = o(n!)\]
+\begin{proof}
+    \begin{align*}
+        & f(n) \in \Theta(\log(n)) \implies \exists c_1, c_2 >0, n_0 > 0, \forall n \geq n_0, 0 \leq c_1 \log(n) \leq f(n) \leq c_2 \log(n), 
+    \end{align*}
+\end{proof}
 \end{document}
