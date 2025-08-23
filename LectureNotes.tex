@@ -14,6 +14,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \usepackage{listings}  % for code listings
+\usepackage{tikz-cd}
 
 \lstset{frame=tb,
   language=C,
@@ -282,22 +283,98 @@ By reflexivity,
 
 
 \section{Recurrence}
+\subsection*{master theorem}
+\begin{theorem}[Master Method]
+Consider the recurrence
+\[
+T(n) = aT\!\left(\tfrac{n}{b}\right) + f(n),
+\]
+where $a, b$ are constants. Then:
+\begin{itemize}
+    \item[(A)] If $f(n) = O(n^{\log_b a - \varepsilon})$ for some constant $\varepsilon > 0$, then
+    \[
+    T(n) = O(n^{\log_b a}).
+    \]
+
+    \item[(B)] If $f(n) = \Theta(n^{\log_b a})$, then
+    \[
+    T(n) = \Theta(n^{\log_b a} \log n).
+    \]
+
+    \item[(C)] If $f(n) = \Omega(n^{\log_b a + \varepsilon})$ for some constant $\varepsilon > 0$, and if $f$ satisfies the smoothness condition
+    \[
+    af(n/b) \leq c f(n) \quad \text{for some constant } c < 1,
+    \]
+    then
+    \[
+    T(n) = \Theta(f(n)).
+    \]
+\end{itemize}
+\end{theorem}
+
+
+
+
+
+
+
 \subsection*{Telescoping}
-\[T(n) = 4\cdot T(\frac{n}{4}) + \frac{n}{\log(n)}\]
-\begin{align*}
-    T(n) &= 4\cdot T(\frac{n}{4}) + \frac{n}{\log(n)}\\
-    \frac{T(n)}{n^2} &= \frac{T(\frac{n}{4})}{(\frac{n}{2})^2} + \frac{1}{2n\cdot \log(\frac{n}{2})}\\
-    \frac{T(\frac{n}{4})}{(\frac{n}{2})^2} &= \frac{T(\frac{n}{16})}{(\frac{n}{4})^2} + \frac{1}{4n\cdot \log(\frac{n}{4})}\\
-    &\dots\\
-    \frac{T(n)}{n^2} &= \frac{1}{2n\cdot \log(\frac{n}{2})} + \frac{1}{4n\cdot \log(\frac{n}{4})} + \dots (\log_4n \text{ terms})\\
-    &= \frac{1}{2n} (\frac{1}{\log(\frac{n}{2})} + \frac{1}{2\log(\frac{n}{4})} + \frac{1}{4\log(\frac{n}{8})}+ \dots)\\
-    &= \frac{1}{2n} \left( \sum_{i=1}^{\log(\frac{n}{2})}\sum_{j=1}^{}\right)\\
-    &= \frac{1}{2n} \sum_{r=1}^{\log(\frac{n}{4})} \frac{1}{2^r \cdot r} \approx \int_{1}^{\log(\frac{n}{4})} \frac{1}{2^x \cdot x }dx\\
-    &=\frac{1}{2n} \left[ \frac{\log(x)}{2^{x+1}}\right]^{\log(\frac{n}{4})}_1\\
-    &= \frac{1}{2n} \left( \frac{\log(\log(\frac{n}{2}))}{2^{\log(\frac{n}{2})+1}}\right) = \frac{1}{2n} \cdot \frac{\log(\log(\frac{n}{2}))}{n}\\
-    T(n) &= \log(\log(\frac{n}{2}))\\
-    T(n) & \in \Theta(n(\log(\log(n))))
-\end{align*}
+For recurrence relation 
+\[T: \mathbb{N} \rightarrow \mathbb{R},T(n) = a\cdot T(\frac{n}{b}) + f(n)\]
+\begin{enumerate}
+    \item Define operator $N_k: (N_kT)(n) = \frac{T(n)}{n^k}$, where $k = \log_ba$
+    \item Transform $T(n) \rightarrow R(n) := \frac{T(n)}{n^k}$
+    \item Obtain the recurrence relation of $R(n) = R(\frac{n}{b}) + \frac{f(n)}{n^k}$
+    \item Define map $E_b: \mathbb{Z} \rightarrow \mathbb{N}, E_b(m) = b^m$
+    \item Define operator $P_b: (P_b H)(m) = H(E_b(m)) = H(b^m)$
+    \item Transform $R(n) \rightarrow S(m) := P_b(R) = R \circ E_b, S(m) = R(b^m)$
+\end{enumerate} 
+\[
+\begin{tikzcd}[scale=1.35, transform shape]
+T(n) \arrow[r, "N_k"] \arrow[d, "n \mapsto n/b"] & R(n) \arrow[r, "P_b"] \arrow[d,"n \mapsto n/b"]& S(m) \arrow[d, "m \mapsto m-1"]\\
+a\cdot T(\frac{n}{b}) + f(n) \arrow[r, <->] & R(\frac{n}{b}) + \frac{f(n)}{n^k} \arrow[r, <->]& S(m - 1) + \frac{f(b^m)}{b^{m\cdot k}} \arrow[d, dashed,""]\\
+\fbox{$T(n) = n^kR(n)\in \Theta(n^k H(n))$} &\arrow[l] R(n) = S(\log_bn)\in \Theta(G(\log_bn)) = H(n) &\arrow[l] S(m) \in \Theta(\sum_{i=1}^{m}\frac{f(b^i)}{b^{i\cdot k}}) = G(m)
+\end{tikzcd} 
+\]
+
+\[T(n)  \]
+
+% GPT version: 
+% \subsection*{Telescoping}
+% Assume $a>0$, integer $b\ge 2$, and $n$ ranges over powers of $b$ (or replace $n/b$ by $\lfloor n/b\rfloor$). For
+% \[
+% T:\mathbb{N}\to\mathbb{R},\qquad T(n)=a\,T\!\left(\frac{n}{b}\right)+f(n),
+% \]
+% \begin{enumerate}
+%   \item Define $N_k$ by $(N_k T)(n):=\dfrac{T(n)}{n^{k}}$ with $k:=\log_b a$.
+%   \item Let $R(n):=(N_k T)(n)=\dfrac{T(n)}{n^k}$.
+%   \item Then $R$ satisfies
+%   \[
+%   R(n)=R\!\left(\frac{n}{b}\right)+\frac{f(n)}{n^k}\quad\text{since }a=b^k.
+%   \]
+%   \item Define $E_b:\mathbb{Z}_{\ge 0}\to\mathbb{N}$ by $E_b(m)=b^m$.
+%   \item Define $P_b$ (precomposition) by $(P_b H)(m):=H(E_b(m))=H(b^m)$.
+%   \item Let $S(m):=(P_b R)(m)=R\circ E_b(m)=R(b^m)$.
+% \end{enumerate}
+
+% \[
+% \begin{tikzcd}[scale=1.2, transform shape, column sep=large, row sep=large]
+% T(n) \arrow[r, "N_k"] \arrow[d, "n \mapsto n/b"'] &
+% R(n) \arrow[r, "P_b"] \arrow[d, "n \mapsto n/b"'] &
+% S(m) \arrow[d, "m \mapsto m-1"'] \\
+% a\,T(n/b)+f(n) \arrow[r, "="] &
+% R(n/b)+\dfrac{f(n)}{n^k} \arrow[r, "="] &
+% S(m-1)+\dfrac{f(b^m)}{b^{mk}}
+% \end{tikzcd}
+% \]
+
+% From the rightmost recurrence,
+% \[
+% S(m)=S(0)+\sum_{i=1}^{m}\frac{f(b^{i})}{b^{ik}},\qquad
+% R(n)=S(\log_b n),\qquad
+% T(n)=n^{k}\,R(n).
+% \]
+
 
 
 \end{document}
