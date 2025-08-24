@@ -15,7 +15,9 @@
 \newtheorem{definition}[theorem]{Definition}
 \usepackage{listings}  % for code listings
 \usepackage{tikz-cd}
-
+\usepackage{forest}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
 \lstset{frame=tb,
   language=C,
   aboveskip=3mm,
@@ -333,11 +335,11 @@ For recurrence relation
 \begin{tikzcd}[scale=1.35, transform shape]
 T(n) \arrow[r, "N_k"] \arrow[d, "n \mapsto n/b"] & R(n) \arrow[r, "P_b"] \arrow[d,"n \mapsto n/b"]& S(m) \arrow[d, "m \mapsto m-1"]\\
 a\cdot T(\frac{n}{b}) + f(n) \arrow[r, <->] & R(\frac{n}{b}) + \frac{f(n)}{n^k} \arrow[r, <->]& S(m - 1) + \frac{f(b^m)}{b^{m\cdot k}} \arrow[d, dashed,""]\\
-\fbox{$T(n) = n^kR(n)\in \Theta(n^k H(n))$} &\arrow[l] R(n) = S(\log_bn)\in \Theta(G(\log_bn)) = H(n) &\arrow[l] S(m) \in \Theta(\sum_{i=1}^{m}\frac{f(b^i)}{b^{i\cdot k}}) = G(m)
-\end{tikzcd} 
+\fbox{$T(n) = n^kR(n)\in \Theta(n^k H(n))$} &\arrow[l] R(n) \in \Theta(G(\log_bn)) = H(n) &\arrow[l] S(m) \in \Theta(S(0) + \sum_{i=1}^{m}\frac{f(b^i)}{b^{i\cdot k}}) = G(m)
+\end{tikzcd}  
 \]
 
-\[T(n)  \]
+\[T(n) \sim n^{\log_ba} \sum_{i=1}^{\lfloor \log_b n\rfloor}\frac{f(b^i)}{b^{i\log_b a}}\]
 
 % GPT version: 
 % \subsection*{Telescoping}
@@ -374,6 +376,73 @@ a\cdot T(\frac{n}{b}) + f(n) \arrow[r, <->] & R(\frac{n}{b}) + \frac{f(n)}{n^k} 
 % R(n)=S(\log_b n),\qquad
 % T(n)=n^{k}\,R(n).
 % \]
+\subsection*{Problems}
+\subsection*{$T(n) = 4T(\frac{n}{4}) + \frac{n}{\log(n)}$}
+Define $R(n) = \frac{T(n)}{n}$,
+\begin{align*}
+    R(n) &= \frac{4\cdot T(\frac{n}{4})}{n} + \frac{1}{\log(n)}\\
+    &= R(\frac{n}{4}) + \frac{1}{\log(n)}
+\end{align*}
+Define $S(m) = R(4^n)$,
+\begin{align*}
+    S(m) & = S(m - 1) + \frac{\frac{4^m}{\log(4^m)}}{4^{m\cdot \log_4 4}}\\
+    &= S(m - 1) + \frac{1}{m \log(4)}\\
+    S(m) &\sim \frac{1}{\log(4)}\sum_{i=1}^{m} \frac{1}{i}\\
+    S(m) &\in \Theta(\log m)\\
+\end{align*}
+Map back to $R(n)$ and $T(n)$, 
+\begin{align*}
+    S(m) \in \Theta(\log m) &\implies R(n) \in \Theta(\log(\log_4 n))\\
+    &\implies T(n) \in n\log(\log(n))
+\end{align*}
+
+
+\subsection*{$T(n) = 4T(\frac{n}{2}) + \sqrt{n}$}
+Define $R(n) = \frac{T(n)}{n^2}$,
+\begin{align*}
+    R(n) &= \frac{4\cdot T(\frac{n}{2})}{n^2} + \frac{\sqrt{n}}{n^2}\\
+    &= R(\frac{n}{2}) + {n^{-\frac{3}{2}}}
+\end{align*}
+Define $S(m) = R(2^n)$,
+\begin{align*}
+    S(m) & = S(m - 1) + \frac{(2^m)^{-\frac{1}{2}}}{2^{m \cdot \log_2 4}}\\
+    &= S(m - 1) + \frac{2^{-\frac{m}{2}}}{2^{2m}}\\
+    &= S(m - 1) + \frac{1}{2^{\frac{3m}{2}}}\\
+    S(m) &\sim \sum_{i=1}^{m} \frac{1}{2^{\frac{3i}{2}}} \text{ , clearly converges}\\
+    S(m) &\in \Theta(1)\\
+\end{align*}2
+Maps back, 
+\begin{align*}
+    S(m) \in \Theta(1) &\implies R(n) \in \Theta(1)\\
+    &\implies T(n) \in \Theta(n^2)
+\end{align*}
+
+
+
+\subsection*{Recurrence relation of merging $k$ arrays of size $n$}
+\[T(k, n) = 2T(\frac{k}{2}, n) + \frac{nk}{2}\]
+\[T(\frac{k}{2}, n) = 2T(\frac{k}{4}, n) + \frac{nk}{4}\]
+Observed that the non-recursive funcion can be tightly bounded by $nk$,
+\[T(k, n) = 2T(\frac{k}{2}, n) + cnk\]
+
+
+With respect to $k$, Define $R(k, n) = \frac{T(k, n)}{k}$
+\begin{align*}
+    R(k, n) &= \frac{2 T(\frac{k}{2}, n)}{k} + cn\\
+    &= R(\frac{k}{2}, n) + cn\\
+\end{align*}
+Define $S(m, n) = R(2^m, n)$,\\
+$f(k, n) = cnk \rightarrow f(2^m, n) = cn2^m$, 
+\begin{align*}
+    S(m, n) &= S(m - 1, n) + \frac{cn2^m}{2^m}\\
+    & \sim cn\sum_{i=1}^{m} 1\\
+    S(m, n) &\in \Theta(nm)
+\end{align*}
+Maps back to $R(n)$,
+\begin{align*}
+    S(m, n) \in \Theta(n) &\implies R(k, n) \in \Theta(n\log(k))\\
+    &\implies T(k, n) \in \Theta(nk\log(k))
+\end{align*}
 
 
 
