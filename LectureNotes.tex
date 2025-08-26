@@ -1,0 +1,490 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}    % For UTF-8 character encoding
+\usepackage[T1]{fontenc}       % For proper font encoding
+\usepackage{lmodern}           % Improved font rendering
+\usepackage{amsmath}   % For advanced mathematical formatting
+\usepackage{amssymb}   % For mathematical symbols
+\usepackage{geometry}  % Adjust page margins
+\usepackage{enumerate} % For custom lists
+\usepackage{xcolor}  % for coloring
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\usepackage{listings}  % for code listings
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,   
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{brown},
+  stringstyle=\color{orange},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+
+\begin{document}
+
+\title{Lecture 1: Asymptotic Analysis}
+\author{Wang Xiyu}
+\date{}
+\maketitle
+\section{Definition}
+\begin{align*}
+    &O(g): \{f: \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot g(n)\} \\
+    &\Omega(g): \{f: \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq c \cdot g(n) \leq f(n)\} \\
+    &\Theta(g): \{f: \exists c_1, c_2 > 0 \land n_0 > 0, \forall n \geq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\} \\
+    %
+    &o(g): \{f: \forall c > 0, \exists n_0 > 0, \forall n \geq n_0, 0 \leq f(n) < c \cdot g(n)\} \\ 
+    &\omega(g): \{f: \forall c > 0, \forall n \leq n_0, 0 \leq c \cdot g(n) < f(n)\} \\
+\end{align*}
+\section{Proof with limit}
+
+\section{Secondary conclusions}
+
+\[\Theta(f) = O(f) \cap \Omega(f)\]
+\begin{proof}
+    1. prove: $O(f) \cap \Omega(f) \subseteq \Theta(f) $\\  
+    From definition: \\
+    \begin{align*}
+        &\Theta(f(n)): \{g: \exists c_1, c_2 > 0, \exists n_0 \geq 0, \forall n \geq n_0, c_1 \cdot f(n) \leq g(n) \leq c_2 \cdot f(n)\}\\
+        &O(f(n)) \cap \Omega(f(n)): \{g: \exists c_1 > 0, \exists n_1 \geq 0, \forall n \geq n_1, 0 \leq g(n) \leq c_1 \cdot f(n) \land 
+        \exists c_2 > 0, \exists n_2 \geq 0, \forall n \geq n_2, 0 \leq c_2 \cdot f(n) \leq g(n)\}
+    \end{align*}
+    When $0 \leq c_1 \leq c_2, O(f(n)) \cap \Omega(f(n)): 
+    \{g: \exists n_1, n_2 \geq 0, \forall n \geq \{\max(n_1, n_2)\}, 0 \leq c_1 f(n) \leq g(n) \leq c_2 f(n)\}$\\
+    $\implies $ $O(f) \cap \Omega(f) \subseteq \Theta(f) $\\  
+    2. prove: $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\ 
+    $(f(n) > 0 \land, c_1 \leq, c_2) \implies (0 \leq c_1 f(n) \leq g(n) \land 0 \leq g(n) \leq c_2 f(n))$\\ 
+    $\implies $  $\Theta(f) \subseteq O(f) \cap \Omega(f)$\\ 
+    $\implies $  $\Theta(f) = O(f) \cap \Omega(f)$\\ 
+
+
+\end{proof}
+\[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = 0 \implies f(n) \in o(g(n))\]
+\begin{proof}
+    From lmit definition, $\forall \epsilon > 0, \exists n_0 \geq 0, 
+    \forall n \geq n_0, \frac{f(n)}{g(n)} < \epsilon$. Let $c = \epsilon, 
+    \frac{f(n)}{g(n)} < \epsilon, f(n) < c \cdot g(n)$. $f(n) \geq 0, f(n) \in o(g(n))$
+\end{proof}
+\[\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \implies f(n) \in \omega(g(n))\]
+\begin{proof}
+    From $\lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} = \infty \iff \lim_{n \rightarrow \infty} \frac{g(n)}{f(n)} = 0$, as \\
+    $\lim_{x \rightarrow \infty} \frac{1}{f(x)} = \frac{1}{\lim_{x\to\infty} f(x)}, \lim_{n \rightarrow \infty} \frac{g(n)}{f(n)} = \frac{1}{\lim_{n \rightarrow \infty}\frac{f(n)}{g(n)}} = \frac{1}{\infty} = 0$.\\
+    Similarly, $\forall \epsilon > 0, \exists n_0 \geq 0, 
+    \forall n \geq n_0, \frac{g(n)}{f(n)} < \epsilon$. Let $c = \frac{1}{\epsilon}, 
+    \frac{g(n)}{f(n)} < \epsilon, c \cdot g(n) < f(n)$.\\
+\end{proof}
+\[0 < \lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} < \infty \implies f(n) \in \Theta(g(n))\]
+\begin{proof}
+    Definitions:\\
+    $\Theta(g): \{f: \exists c_1, c_2 > 0 \land n_0 > 0, \forall n \geq n_0, c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n)\}$\\
+    $O(g): \{f: \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot g(n)\}$ \\
+    $o(g): \{f: \forall c > 0, \exists n_0 > 0, \forall n \geq n_0, 0 \leq f(n) < c \cdot g(n)\}$\\
+    Prove: $\Theta(f) = O(f) \setminus o(f)$
+    \begin{proof}
+        1. $\Theta(f) \subseteq O(f) \setminus o(f)$\\
+            Suppose $g(n) \in \Theta(f), \Theta(f) = O(f) \cap \Omega(f) \implies g(n) \in O(f)$. \\
+            Suppose $g(n) \in o(f), (\exists c_1, c_2 > 0, \exists n_1 > 0, \forall n \geq n_1, 0 \leq c_1 \cdot f(n) \leq g(n) \leq c_2 \cdot f(n)) \land (\forall c_3 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq g(n) < c_3 \cdot f(n))$\\
+            Let $c_3 < c_1, c_1 \cdot f(n) \leq g(n) < c_3 \cdot f(n)$, contradiction, \\
+            $\implies g(n) \in \Theta(f) \rightarrow g(n) \notin o(f)$\\
+            $\implies \Theta(f) \subseteq O(f) \setminus o(f)$\\
+        2. \[O(f) \setminus o(f) \subseteq \Theta(f) = \]
+            \[
+            \begin{aligned}
+            \{g:\ & (\exists c_1 > 0, \exists n_1 > 0, \forall n \geq n_1,\ 0 \leq g(n) \leq c_1 \cdot f(n)) \\
+                & \land\ \neg(\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2,\ 0 \leq g(n) < c_2 \cdot f(n)) \} \\
+            \{g:\ & (\exists c_1 > 0, \exists n_1 > 0, \forall n \geq n_1,\ 0 \leq g(n) \leq c_1 \cdot f(n)) \\
+                & \land\ (\exists c_2 > 0, \forall n_2 > 0, \exists n \geq n_2,\ (g(n) < 0 \lor g(n) \geq c_2 \cdot f(n))) \} \\
+            \{g:\ & \exists c_1 > c_2 > 0, \forall n_2 > 0, \exists n_1 \geq n_2, \forall n \geq n_1,\ 0 \leq c_2 \cdot f(n) \leq g(n) \leq c_1 \cdot f(n) \} \\[0.5em]
+            \{g:\ & \exists c_1 > c_2 > 0, \exists n_0 > 0, \forall n \geq n_0,\ 0 \leq c_2 \cdot f(n) \leq g(n) \leq c_1 \cdot f(n) \}
+            \end{aligned}
+            \]
+    \end{proof}
+\end{proof}
+
+\section{Reflexivity}
+\subsection{$f(n)\in O(f(n))$}
+\begin{proof}
+    Suppose $f(n) > 0$\\
+    Let $c = 1, n_0 = 1, \forall n \geq n_0, 0 \leq f(n) \leq f(n), \implies f(n) \in O(f(n))$
+\end{proof}
+\subsection{$f(n) \in \Omega(f(n))$, $f(n) \in \Theta(f(n))$}
+Similarly, by picking the right $c$ and $n_0$ it's easy to prove existential statements.
+
+\section{Transitivity}
+\subsection{$f(n) \in O(g(n)) \land g(n) \in O(h(n)) \implies f(n) \in O(h(n))$}
+\begin{proof}
+    \begin{align*}
+        &\exists c_1 > 0, n_1 > 0, \forall n \geq n_1, 0 \leq f(n) \leq c_1 \cdot g(n)\\
+        &\exists c_2 > 0, n_2 > 0, \forall n \geq n_2, 0 \leq g(n) \leq c_2 \cdot h(n)
+    \end{align*}
+    Let $c_1 = 1, n_0 = \max(n_1, n_2)$, $0 \leq f(n) \leq g(n) \leq c_2 \cdot h(n) \implies \exists c_2 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c_2 \cdot h(n)$\\
+    $\implies f(n) \in O(h(n))$  
+\end{proof}
+\subsection{$f(n) \in \Omega(g(n)) \land g(n) \in \Omega(h(n)) \implies f(n) \in \Omega(h(n))$}
+Similar to $O(f(n))$ proof
+\subsection{$f(n) \in \Theta(g(n)) \land g(n) \in \Theta(h(n)) \implies f(n) \in \Theta(h(n))$}
+\begin{align*}
+    &\exists c_1^{[1]}, c_2^{[1]}> 0, n_1 > 0, \forall n \geq n_1, 0 \leq c_1^{[1]} \cdot g(n) \leq f(n) \leq c_2^{[1]} \cdot g(n)\\
+    &\exists c_1^{[2]}, c_2^{[2]} > 0, n_2 > 0, \forall n \geq n_2, 0 \leq c_1^{[2]} \cdot h(n) \leq g(n) \leq c_2^{[2]} \cdot h(n)
+\end{align*}
+Let $c_1^{[1]} = c_2^{[1]} = 1, f(n) = g(n), $\\
+$0 \leq c_1^{[2]} \cdot h(n) \leq f(n) \leq c_2^{[2]} \cdot h(n) \implies f(n) \in \Theta(h(n))$
+\subsection{$f(n) \in o(g(n)) \land g(n) \in o(h(n)) \implies f(n) \in o(h(n))$}
+\begin{proof}
+    \begin{align}
+        &\forall c_1 > 0, \exists n_1 > 0, \forall n \geq n_1, 0 \leq f(n) < c_1 \cdot g(n)\\
+        &\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq g(n) < c_2 \cdot h(n)
+    \end{align}
+From  (2), $\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq c_1 \cdot g(n) < c_1 \cdot c_2 \cdot h(n)$
+    \begin{align*}
+        &\forall c_1, c_2 > 0, \exists n_1, n_2 > 0, \forall n \geq \max(n_1, n_2), 0 \leq f(n) < c_1 \cdot g(n) < c_1 \cdot c_2 \cdot h(n)
+    \end{align*}
+    \[\forall c_1, c_2 > 0, \exists n_1, n_2 > 0, \forall n \geq \max(n_1, n_2), 0 \leq f(n) < c_1 \cdot c_2 \cdot h(n)\]
+\end{proof}
+
+\subsection{$f(n) \in \omega(g(n) \land g(n) \in \omega(h(n))) \implies f(n) \in \omega(h(n))$}
+    \begin{align*}
+        &\forall c_1 > 0, \exists n_1 > 0, \forall n \geq n_1, 0 \leq c_1 \cdot g(n) < f(n)\\
+        &\forall c_2 > 0, \exists n_2 > 0, \forall n \geq n_2, 0 \leq c_2 \cdot h(n) < g(n)
+    \end{align*}
+    \[\forall c_1, c_2 > 0, \exists n_1, n_2 > 0, \geq \max(n_1, n_2), 0 \leq c_1 \cdot c_2 \cdot h(n) < c_1 \cdot g(n) < f(n)\]
+\section{Symmetry: $f(n) \in \Theta(g(n)) \iff g(n)\in \Theta(f(n))$}
+\begin{proof}
+    \begin{align*}
+        & f(n) \in \Theta(g(n)) \implies\\
+        &\exists c_1, c_2> 0, n_1 > 0, \forall n \geq n_1, 0 \leq c_1 \cdot g(n) \leq f(n) \leq c_2 \cdot g(n) \implies\\
+        & \left(0 \leq g(n) \leq \frac{1}{c_1}\cdot f(n) \leq \frac{c_2}{c_1}\cdot g(n)\right) \land \left( 0 \leq \frac{c_1}{c_2} \cdot g(n) \leq \frac{1}{c_2} \cdot f(n) \leq g(n)\right) \implies \\
+        & 0 \leq \frac{1}{c_2} \cdot f(n) \leq g(n) \leq \frac{1}{c_1}\cdot f(n)\\
+    \end{align*}
+    Identical proof for the other direction
+\end{proof}
+\section{Complementary}
+\subsection{$f(n) \in O(g(n) \iff g(n) \in \Omega(f(n)))$}
+\begin{proof}
+    \begin{align*}
+        & f(n) \in O(g(n)) \implies \\
+        & \exists c > 0 \land n_0 > 0, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot g(n) \implies \\
+        & 0 \leq \frac{1}{c}\cdot f(n) \leq g(n)
+    \end{align*}
+Proof for the other direction and the next statement are identical.
+\end{proof}
+\subsection{$f(n) \in o(g(n) \iff g(n) \in \omega(f(n)))$}
+
+\section{Problems}
+\subsection*{$3^{n + 1} \in O(3^n)$}
+\begin{proof}
+    \begin{align*}
+        & 3^{n+ 1} = 3 \cdot 3^n\\
+        & let c = 4, n_0 = 1, \forall n \geq n_0, \\
+        & 3^{n+1} < c\cdot 3^n
+    \end{align*}
+\end{proof}
+\subsection*{$4^n \notin O(2^n)$}
+\begin{proof}
+    Suppose $f(n) = 4^n \in O(2^n)$,\\
+    \begin{align*}
+        & \exists c > 0, n_0 > 0, \forall n \geq n_0, 0 \leq 2^{2 \times n} \leq c\cdot 2^n \implies\\
+        & 0 \leq 2^n \leq c\\
+        & 0 \leq n \leq \log_2c (const)\\
+        & \text{n is upper bounded by a constant, a contradiction}
+    \end{align*}
+\end{proof}
+\subsection*{$2^{\lfloor \log_2n \rfloor} \in \Theta(n)$}
+\begin{proof}
+    \begin{align*}
+        & \text{Let } k = \lfloor \log_2 n\rfloor, 2^k \leq n < 2^{k+1} = 2 \cdot 2^k\\
+        & \text{Let } c_1 = \frac{1}{2}, c_2 = 1, n_0 = 2, \\
+        & \frac{n}{2} < 2^k \leq n
+    \end{align*}
+\end{proof}
+
+\subsection*{For constant $i$, $a > 0$, $(n + a)^i \in O(n^i)$}
+\begin{proof}
+    \begin{align*}
+        & \forall a > 0, \exists n_0 > a, \forall n \geq n_0, f(n) = (n + a)^i \leq (2n)^i = 2^i \cdot n^i, \\
+        &\text{Let } c = 2^i, n_0 = a + 1, \forall n \geq n_0, 0 \leq f(n) \leq c \cdot n^i
+    \end{align*}
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \in O(n)$}
+\begin{proof}
+    Let $c = 2, n_0 = 2, \forall n \geq n_0, 2^{\log_2n} = n \implies 0 \leq n \leq 2n$
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \in \Omega(n)$}
+\begin{proof}
+    Let $c = 0.5, n_0 = 2, \forall n \geq n_0, 2^{\log_2n} = n \implies 0 \leq 0.5n \leq n$
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \notin \Theta(\sqrt{n})$}
+\begin{proof}
+    Suppose otherwise, $\exists c_1, c_2 > 0, n_0 > 0, \forall n \geq n_0, 0 \leq c_1 \cdot \sqrt{n} \leq n \leq c_2 \sqrt{n}$,\\
+    \begin{align*}
+        & c_1 \leq \sqrt{n} \leq c_2\\
+        & \text{However, } \lim_{n \rightarrow \infty} \sqrt{n}= \infty, \text{ thus cannot be bound by constant } c_2, \text{a contradiction.}
+    \end{align*}
+\end{proof}
+\subsection*{Prove: $2^{\log_2n} \notin \omega(n)$}
+\begin{proof}
+    Suppose otherwise, $\forall c > 0, \exists n_0 > 0, \forall n \geq n_0, 0 \leq c\cdot n < n$. When $c = 2, \forall n_0 > 0, \forall n \geq n_0, 2n \geq n$, a contradiction.
+\end{proof}
+
+\subsection*{Rank order of growth}
+\subsubsection*{$f_1(n) = \log n$}
+By reflexivity, 
+\[f_1(n) \in \Theta(\log n)\]
+\subsubsection*{$f_2(n) = n!$}
+By reflexivity, 
+\[f_2(n) \in \Theta(n!)\]
+\subsubsection*{$f_3(n) = 2^n + n$}
+\[f_3(n) \in \Theta(2^n)\]
+\begin{proof}
+    
+\end{proof}
+\subsubsection*{$f_4(n) = n^{2.3} + 16n$}
+\[f_4(n) \in \Theta(n^{2.3})\]
+\begin{proof}
+    
+\end{proof}
+\subsubsection*{$f_5(n) = \log(n^{2})$}
+\[f_5(n) \in \Theta(\log(n))\]
+\begin{proof}
+    Assume base 2, $f_5(n) = \log(n^2) = 2\log(n)$, let $c_1 = 1, c_2 = 3, n_0 = 2, \\ \forall n \geq n_0, 0 \leq \log(n) \leq \log(n) \leq 3\log(n)$
+\end{proof}
+\[\Theta(\log(n)) \subseteq o(n^{2.3}) \subseteq o(2^n) \subseteq o(n!)\]
+\begin{proof}
+    \begin{align*}
+        & \lim_{n \rightarrow \infty} \frac{\log(n)}{n^{2.3}} = \lim_{n \rightarrow \infty} \frac{(\log(n))'}{(n^{2.3})'} = \lim_{n \rightarrow \infty} \frac{1}{\ln(2)n^{1.3}} = 0, \\
+        & \implies \forall f(n) \in \Theta(\log(n)), f(n) \in o(n)\\
+    \end{align*}
+
+    \begin{align*}
+        & \lim_{n \rightarrow \infty} \frac{n^{2.3}}{2^n} = \lim_{n \rightarrow \infty} \frac{2.3\ln(n)}{n\cdot \ln(2)} = \lim_{n \rightarrow \infty} \frac{2.3}{n\cdot \ln(2)} = 0, \\
+        & \implies \forall f(n) \in \Theta(n^{2.3}), f(n) \in o(2^n)
+    \end{align*}
+
+    \begin{align*}
+        & \lim_{n \rightarrow \infty} \frac{2^n}{n!} = \lim_{n \rightarrow \infty} \frac{\prod_{r=1}^{n}2}{\prod_{r=1}^{n} r} = 0,  \forall n > 2\\
+        & \implies \forall f(n) \in \Theta(2^n), f(n) \in o(n!)
+    \end{align*}
+
+\end{proof}
+
+
+
+\section{Recurrence}
+\subsection*{master theorem}
+\begin{theorem}[Master Method]
+Consider the recurrence
+\[
+T(n) = aT\!\left(\tfrac{n}{b}\right) + f(n),
+\]
+where $a, b$ are constants. Then:
+\begin{itemize}
+    \item[(A)] If $f(n) = O(n^{\log_b a - \varepsilon})$ for some constant $\varepsilon > 0$, then
+    \[
+    T(n) = O(n^{\log_b a}).
+    \]
+
+    \item[(B)] If $f(n) = \Theta(n^{\log_b a})$, then
+    \[
+    T(n) = \Theta(n^{\log_b a} \log n).
+    \]
+
+    \item[(C)] If $f(n) = \Omega(n^{\log_b a + \varepsilon})$ for some constant $\varepsilon > 0$, and if $f$ satisfies the smoothness condition
+    \[
+    af(n/b) \leq c f(n) \quad \text{for some constant } c < 1,
+    \]
+    then
+    \[
+    T(n) = \Theta(f(n)).
+    \]
+\end{itemize}
+\end{theorem}
+
+
+
+
+
+
+
+\subsection*{Telescoping}
+For recurrence relation 
+\[T: \mathbb{N} \rightarrow \mathbb{R},T(n) = a\cdot T(\frac{n}{b}) + f(n)\]
+\begin{enumerate}
+    \item Define operator $N_k: (N_kT)(n) = \frac{T(n)}{n^k}$, where $k = \log_ba$
+    \item Transform $T(n) \rightarrow R(n) := \frac{T(n)}{n^k}$
+    \item Obtain the recurrence relation of $R(n) = R(\frac{n}{b}) + \frac{f(n)}{n^k}$
+    \item Define map $E_b: \mathbb{Z} \rightarrow \mathbb{N}, E_b(m) = b^m$
+    \item Define operator $P_b: (P_b H)(m) = H(E_b(m)) = H(b^m)$
+    \item Transform $R(n) \rightarrow S(m) := P_b(R) = R \circ E_b, S(m) = R(b^m)$
+\end{enumerate} 
+\[
+\begin{tikzcd}[scale=1.35, transform shape]
+T(n) \arrow[r, "N_k"] \arrow[d, "n \mapsto n/b"] & R(n) \arrow[r, "P_b"] \arrow[d,"n \mapsto n/b"]& S(m) \arrow[d, "m \mapsto m-1"]\\
+a\cdot T(\frac{n}{b}) + f(n) \arrow[r, <->] & R(\frac{n}{b}) + \frac{f(n)}{n^k} \arrow[r, <->]& S(m - 1) + \frac{f(b^m)}{b^{m\cdot k}} \arrow[d, dashed,""]\\
+\fbox{$T(n) = n^kR(n)\in \Theta(n^k H(n))$} &\arrow[l] R(n) \in \Theta(G(\log_bn)) = H(n) &\arrow[l] S(m) \in \Theta(S(0) + \sum_{i=1}^{m}\frac{f(b^i)}{b^{i\cdot k}}) = G(m)
+\end{tikzcd}  
+\]
+
+\[T(n) \sim n^{\log_ba} \sum_{i=1}^{\lfloor \log_b n\rfloor}\frac{f(b^i)}{b^{i\log_b a}}\]
+
+% GPT version: 
+% \subsection*{Telescoping}
+% Assume $a>0$, integer $b\ge 2$, and $n$ ranges over powers of $b$ (or replace $n/b$ by $\lfloor n/b\rfloor$). For
+% \[
+% T:\mathbb{N}\to\mathbb{R},\qquad T(n)=a\,T\!\left(\frac{n}{b}\right)+f(n),
+% \]
+% \begin{enumerate}
+%   \item Define $N_k$ by $(N_k T)(n):=\dfrac{T(n)}{n^{k}}$ with $k:=\log_b a$.
+%   \item Let $R(n):=(N_k T)(n)=\dfrac{T(n)}{n^k}$.
+%   \item Then $R$ satisfies
+%   \[
+%   R(n)=R\!\left(\frac{n}{b}\right)+\frac{f(n)}{n^k}\quad\text{since }a=b^k.
+%   \]
+%   \item Define $E_b:\mathbb{Z}_{\ge 0}\to\mathbb{N}$ by $E_b(m)=b^m$.
+%   \item Define $P_b$ (precomposition) by $(P_b H)(m):=H(E_b(m))=H(b^m)$.
+%   \item Let $S(m):=(P_b R)(m)=R\circ E_b(m)=R(b^m)$.
+% \end{enumerate}
+
+% \[
+% \begin{tikzcd}[scale=1.2, transform shape, column sep=large, row sep=large]
+% T(n) \arrow[r, "N_k"] \arrow[d, "n \mapsto n/b"'] &
+% R(n) \arrow[r, "P_b"] \arrow[d, "n \mapsto n/b"'] &
+% S(m) \arrow[d, "m \mapsto m-1"'] \\
+% a\,T(n/b)+f(n) \arrow[r, "="] &
+% R(n/b)+\dfrac{f(n)}{n^k} \arrow[r, "="] &
+% S(m-1)+\dfrac{f(b^m)}{b^{mk}}
+% \end{tikzcd}
+% \]
+
+% From the rightmost recurrence,
+% \[
+% S(m)=S(0)+\sum_{i=1}^{m}\frac{f(b^{i})}{b^{ik}},\qquad
+% R(n)=S(\log_b n),\qquad
+% T(n)=n^{k}\,R(n).
+% \]
+\subsection*{Problems}
+\subsection*{$T(n) = 4T(\frac{n}{4}) + \frac{n}{\log(n)}$}
+Define $R(n) = \frac{T(n)}{n}$,
+\begin{align*}
+    R(n) &= \frac{4\cdot T(\frac{n}{4})}{n} + \frac{1}{\log(n)}\\
+    &= R(\frac{n}{4}) + \frac{1}{\log(n)}
+\end{align*}
+Define $S(m) = R(4^n)$,
+\begin{align*}
+    S(m) & = S(m - 1) + \frac{\frac{4^m}{\log(4^m)}}{4^{m\cdot \log_4 4}}\\
+    &= S(m - 1) + \frac{1}{m \log(4)}\\
+    S(m) &\sim \frac{1}{\log(4)}\sum_{i=1}^{m} \frac{1}{i}\\
+    S(m) &\in \Theta(\log m)\\
+\end{align*}
+Map back to $R(n)$ and $T(n)$, 
+\begin{align*}
+    S(m) \in \Theta(\log m) &\implies R(n) \in \Theta(\log(\log_4 n))\\
+    &\implies T(n) \in n\log(\log(n))
+\end{align*}
+
+
+\subsection*{$T(n) = 4T(\frac{n}{2}) + \sqrt{n}$}
+Define $R(n) = \frac{T(n)}{n^2}$,
+\begin{align*}
+    R(n) &= \frac{4\cdot T(\frac{n}{2})}{n^2} + \frac{\sqrt{n}}{n^2}\\
+    &= R(\frac{n}{2}) + {n^{-\frac{3}{2}}}
+\end{align*}
+Define $S(m) = R(2^n)$,
+\begin{align*}
+    S(m) & = S(m - 1) + \frac{(2^m)^{-\frac{1}{2}}}{2^{m \cdot \log_2 4}}\\
+    &= S(m - 1) + \frac{2^{-\frac{m}{2}}}{2^{2m}}\\
+    &= S(m - 1) + \frac{1}{2^{\frac{3m}{2}}}\\
+    S(m) &\sim \sum_{i=1}^{m} \frac{1}{2^{\frac{3i}{2}}} \text{ , clearly converges}\\
+    S(m) &\in \Theta(1)\\
+\end{align*}2
+Maps back, 
+\begin{align*}
+    S(m) \in \Theta(1) &\implies R(n) \in \Theta(1)\\
+    &\implies T(n) \in \Theta(n^2)
+\end{align*}
+
+\subsection*{$T(n) = T(\frac{n}{2}) + 2^{\sqrt{\log n}}$}
+1. Using telescoping\\
+$a = 0 \rightarrow \log_b a = 0, \text{there is no need for }T(n) \mapsto R(n).$\\
+Define $S(m) = T(2^n)$, we have:\\
+\begin{align*}
+    S(m) &= S(m - 1) + 2^{\sqrt{\log{2^m}}}\\
+    &= S(m - 1) + 2^{\sqrt{m}}    \\
+    S(m) &\sim \sum_{i=1}^{m} 2^{\sqrt{i}} \approx \int_{1}^{m} 2^{\sqrt{x}} dx\\
+\end{align*}
+Solve for $ \int_{1}^{m} 2^{\sqrt{x}} dx$ by substitution: let $u = x^\frac{1}{2}$
+\begin{align*}
+    \frac{du}{dx} &= \frac{1}{2}x^{-\frac{1}{2}}\\
+    dx &= \frac{1}{2u}\\
+    \int 2^{\sqrt{x}} dx &= \int 2u\cdot 2^u du = 2\int u2^udu\\
+    &= \frac{2^u(2u \ln(2) - 1)}{(\ln(2))^2} + C\\
+    &= \frac{2^{\sqrt{x}}(2\sqrt{x} \ln(2) - 1)}{(\ln(2))^2} + C\\
+    \int_{1}^{m} 2^{\sqrt{x}} dx &= \frac{1}{(\ln(2))^2}\left(2^{\sqrt{m}}(2\sqrt{m} \ln(2)-1)\right)
+\end{align*}
+Ignoring the constants, we have 
+\begin{align*}
+    S(m) &\sim \sum_{i=1}^{m} 2^{\sqrt{i}} \approx c\cdot 2^{\sqrt{m}}\sqrt{m}\\
+    T(n) &\in \Theta(\sqrt{\log n}\cdot 2^{\sqrt{\log n}})
+\end{align*}
+\subsection*{Recurrence relation of merging $k$ arrays of size $n$}
+\[T(k, n) = 2T(\frac{k}{2}, n) + \frac{nk}{2}\]
+\[T(\frac{k}{2}, n) = 2T(\frac{k}{4}, n) + \frac{nk}{4}\]
+Observed that the non-recursive funcion can be tightly bounded by $nk$,
+\[T(k, n) = 2T(\frac{k}{2}, n) + cnk\]
+
+
+With respect to $k$, Define $R(k, n) = \frac{T(k, n)}{k}$
+\begin{align*}
+    R(k, n) &= \frac{2 T(\frac{k}{2}, n)}{k} + cn\\
+    &= R(\frac{k}{2}, n) + cn\\
+\end{align*}
+Define $S(m, n) = R(2^m, n)$,\\
+$f(k, n) = cnk \rightarrow f(2^m, n) = cn2^m$, 
+\begin{align*}
+    S(m, n) &= S(m - 1, n) + \frac{cn2^m}{2^m}\\
+    & \sim cn\sum_{i=1}^{m} 1\\
+    S(m, n) &\in \Theta(nm)
+\end{align*}
+Maps back to $R(n)$,
+\begin{align*}
+    S(m, n) \in \Theta(n) &\implies R(k, n) \in \Theta(n\log(k))\\
+    &\implies T(k, n) \in \Theta(nk\log(k))
+\end{align*}
+
+
+\section{Proof of Correctness}
+\subsection*{Iterative algorithms}
+Steps
+\begin{enumerate}
+    \item Loop invariant
+    \item Initialization
+    \item Maintenance
+    \item Termination
+\end{enumerate}
+\begin{lstlisting}[mathescape=true]
+    Dijkstra($G(V, E), s \in V$):
+        $d(s) = 0$
+        $R = \{s\}$
+        while($R \notin V$):
+            $v \in V \setminus R, v = \min_{u\in R}(d(u) + w(u, v))$
+            $d(v) = \min_{u \in R}(d(u) + w(u, v))$
+            $R \leftarrow v$
+\end{lstlisting}
+Loop invariant: 
+\[\forall u \in R, d(u) = dist(s, u)\]
+Initialization:
+\end{document}
