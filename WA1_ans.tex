@@ -1,0 +1,128 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}    % For UTF-8 character encoding
+\usepackage[T1]{fontenc}       % For proper font encoding
+\usepackage{lmodern}           % Improved font rendering
+\usepackage{amsmath}   % For advanced mathematical formatting
+\usepackage{amssymb}   % For mathematical symbols
+\usepackage{geometry}  % Adjust page margins
+\usepackage{enumerate} % For custom lists
+\usepackage{xcolor}  % for coloring
+\usepackage{amsthm}
+\usepackage{pdfpages}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\usepackage{listings}  % for code listings
+\usepackage{tikz-cd}
+\usepackage{forest}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,   
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{brown},
+  stringstyle=\color{orange},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+\geometry{top=1in, bottom=1in, left=1in, right=1in}
+
+\begin{document}
+
+\title{WA 1}
+\author{Wang Xiyu}
+\date{}
+\maketitle
+
+\section{Recurrence}
+
+\subsection{$T(n) = 16T(\frac{n}{4}) + 32n\log^{128}n$}
+Define $R(n) = \frac{T(n)}{n^2}$:
+\begin{align*}
+    R(n) &= \frac{T(\frac{n}{4})}{(\frac{n}{4})^2} + \frac{32\log^{128}n}{n}\\
+    &= R(\frac{n}{4}) + \frac{32\log^{128}n}{n}
+\end{align*}
+Define $S(m) = R(4^n)$:
+\begin{align*}
+    S(m) &= S(m - 1) + \frac{32 \cdot 4^m (\log(4^m))^{128}}{4^{m \cdot \log_4(16)}}\\
+    &= S(m -1) + \frac{32\cdot 4^m m^{128}}{16^m}\\
+    &= S(m-1) + \frac{32(m)^{128}}{4^m}\\
+    S(m) &\in \Theta(S(0) + 32\sum_{i=1}^{m} \frac{i^{128}}{4^i})
+\end{align*}
+It's easy to show that $f(n) = \sum_{i=0}^{m}\frac{i^{128}}{4^i} \in O(1)$ as 
+\[\lim_{n\rightarrow \infty} \frac{n^{128}}{4^n} = \lim_{n\rightarrow \infty} \frac{128 n^{127}}{\ln(4) 4^n} 
+= \dots = \lim_{n \rightarrow \infty} \frac{c_1 }{c_2 4^n} = 0\quad \text{for some constant } c_1, c_2\]
+$\lim_{n \rightarrow \infty} \frac{\frac{n^{128}}{4^n}}{1} = 0 \implies f(n) = \frac{n^{128}}{4^n} \in o(1) \implies f(n) \in O(1)$
+
+\begin{align*}
+    S(m) &\in O(1)\\
+    R(n) &\in O(1)\\
+    T(n) &\in O(n^2)
+\end{align*}
+\subsection{$T(n) = 16T(\frac{n}{4}) + 64n^2 \log^8 n + 32n \log^{128} n$}
+Define $R(n) = \frac{T(n)}{n^2}$:
+\begin{align*}
+    R(n) &= \frac{16\cdot T(n)}{(\frac{n^2}{4})} + \frac{64n^2(\log(n))^8}{n^2} + \frac{32n\log^{128}n}{n^2}\\
+    R(n) &= \frac{16\cdot T(n)}{(\frac{n^2}{4})} + 64(\log(n))^8 + \frac{32\log^{128}n}{n}\\
+\end{align*}
+Define $m = 4^n$, $n = \log(m)$, $S(m) = R(4^n)$
+\begin{align*}
+    S(m) &= S(m - 1) + \frac{}{4^{}}
+\end{align*}
+
+
+
+\subsection{$T(n) = T(\sqrt{n}) + \log(n)$}
+Define $n = 2^m$, $m = \log(n)$ 
+\begin{align*}
+    T(n) &= T(n^{\frac{1}{2}}) + \log(n)\\
+    T(2^m) &= T(2^{\frac{1}{2} m}) + \log(2^m)\\
+    &= T(2^{\frac{1}{2} m}) + m\\
+    R(m) &= R(\frac{m}{2}) + m
+\end{align*}
+Define $m = 2^k$, $k = \log(m)$
+\begin{align*}
+    R(2^k) &= R(\frac{2^k}{2}) + 2^k\\
+    S(k) &= S(k-1) + 2^k\\
+    S(k) &\in O(S(0) + \sum_{i=1}^{k} 2^i) = O(1 + 2^{k + 1} + 2) = O(2^k)
+\end{align*}
+Map back to $R(m)$ and $T(n)$:
+\begin{align*}
+    S(k) &\in O(2^k)\\
+    \implies R(m) &\in O(2^{\log(m)}) = O(m)\\
+    \implies T(n) &\in O(\log(n))
+\end{align*}
+
+\subsection{$T(n) = T(\sqrt{n}) + \log\log(n)$}
+Define $n = 2^m$, $m = \log(n)$ 
+\begin{align*}
+    T(n) &= T(n^{\frac{1}{2}}) + \log\log(n)\\
+    T(2^m) &= T(2^{\frac{1}{2} m}) + \log\log(2^m)\\
+    &= T(2^{\frac{1}{2} m}) + \log(m)\\
+    R(m) &= R(\frac{m}{2}) + \log(m)
+\end{align*}
+Define $m = 2^k$, $k = \log(m)$
+\begin{align*}
+    R(2^k) &= R(\frac{2^k}{2}) + \log(2^k)\\
+    S(k) &= S(k-1) + k\\
+    S(k) &\in O(S(0) + \sum_{i=1}^{k} i) = O(\frac{k(k + 1)}{2}) = O(k^2)
+\end{align*}
+Map back to $R(m)$ and $T(n)$:
+\begin{align*}
+    S(k) &\in O(k^2)\\
+    \implies R(m) &\in O(\log^2(m))\\
+    \implies T(n) &\in O((\log\log(n))^2)
+\end{align*}
+
+
+
+\end{document}
