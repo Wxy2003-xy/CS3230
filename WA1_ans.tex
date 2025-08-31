@@ -16,6 +16,7 @@
 \usepackage{listings}  % for code listings
 \usepackage{tikz-cd}
 \usepackage{forest}
+
 \usetikzlibrary{arrows.meta}
 \usetikzlibrary{arrows.meta,decorations.pathreplacing,calc}
 \lstset{frame=tb,
@@ -63,7 +64,7 @@ $f(n) \in \omega(g(n))$
 $f(n) \in \Theta(g(n))$
 \begin{proof}
     $g(n) = 2\cdot 2^n$, let $c_1 = \frac{1}{2}, c_2 = 1, n_0 = 2$, \\
-    $\forall n \geq n_0, 2^n \leq 2^n \leq 2\cdot 2^n \implies f(n) \in \Theta(g(n))$
+    $\forall n \geq n_0, 1 \cdot 2^n \leq 2^n \leq 2\cdot 2^n \implies f(n) \in \Theta(g(n))$
 \end{proof}
 \subsection{$f(n) = 2^{(2^n)},\; g(n) = 2^{(2^{n+1})}$}
 $f(n) \in o(g(n))$
@@ -84,18 +85,48 @@ $f(n) \in \Theta(g(n))$
 \end{proof}
 
 \subsection{$f(n) = \log\log (n^n),\; g(n) = \log\log(2^{\sqrt{n}})$}
+$f(n) \in \Theta(g(n))$
 \begin{proof}
-    Define $h(n) = n^n$, and $k(n)=2^{\sqrt{n}}$,
-    \[\lim_{n \rightarrow \infty} \frac{\ln h(n)}{\ln k(n)} = \lim_{n \rightarrow \infty} \frac{n\ln(n)}{{\sqrt{n}\ln(2)}}\]
+    $f(n) = \log(n \log(n )) = \log(n) + \log(\log(n))$\\
+    $g(n) = \log(\sqrt{n}\log 2) = \log(\sqrt{n}) + \log(\log2) = \frac{1}{2}\log(n) + \log\log(2)$\\
+    $L = \frac{f(n)}{g(n)} = \frac{\log n + \log(\log n)}{0.5 \log n + \log (\log 2)} = 
+    \frac{1 + \frac{\log\log(n)}{\log(n)}}{\frac{1}{2} \frac{\log\log(2)}{\log(n)}}$\\
+    $\lim_{n\rightarrow \infty} L = 2$\\
+    $0 < \lim_{n \rightarrow \infty} \frac{f(n)}{g(n)} < \infty \implies f(n) \in \Theta(g(n))$
 \end{proof}
 \subsection{$f(n) = 2^{\sqrt{\log n}},\; g(n) = \sqrt{n}$}
+$f(n) \in o(g(n))$
+\begin{proof}
+    $L = \frac{f(n)}{g(n)}, \log(L) = \log(f(n)) - \log(g(n)) = \sqrt{\log n}\log(2) - \frac{1}{2} \log(n) $\\
+    $= -\frac{1}{2}\log n (1 - \frac{\log 2 \sqrt{\log n}}{\log n}) = -\frac{1}{2}\log n (1 - \frac{\log 2 }{\sqrt{\log n}}) $\\
+    $\lim_{n\rightarrow\infty} \log(L) = -\infty \implies \lim_{n\rightarrow\infty} L = e^{-\infty} = 0^+ \implies f(n) \in o(g(n))$ 
+\end{proof}
 
 \subsection{$f(n) = 2^{\sqrt{\log n}},\; g(n) = 2^{2^{\sqrt{\log\log n}}}$}
+$f(n) \in \omega(g(n))$
+\begin{proof}
+Let $u = \log\log n$, $f(u) = 2^{\sqrt{2^u}}, g(u) = 2^{\sqrt{u}}$\\
+$L = \frac{f(u)}{g(u)} = \frac{2^{\sqrt{2^u}}}{2^{\sqrt{u}}}, \log(L) = \log(2) (\sqrt{2^u} - \sqrt{u}), \lim_{u \rightarrow \infty}\log(L) = \infty \implies
+\lim_{u \rightarrow \infty}L = \infty$\\
+$u = \log\log n $ is monotonous and unbounded, $\lim \frac{f(u)}{g(u)} = \infty \implies \lim \frac{f(n)}{g(n)} = \infty \implies f(n) \in \omega(g(n)) $
+\end{proof}
+
 
 \subsection{$f(n) = n^{\frac{1}{\log n}},\; g(n) = n^{\frac{1}{(\log n)^2}}$}
+$f(n) \in \Theta(g(n))$
+\begin{proof}
+    Let $L = \frac{f(n)}{g(n)} = n^{\frac{1}{\log n} - \frac{1}{(\log n)^2}} = n^{\frac{\log n - 1}{(\log n)^2}}$\\
+    $\log(L) = \log n (\frac{\log n - 1}{(\log n)^2}) = \frac{\log n - 1}{\log n} = 1 - \frac{1}{\log n}, $\\
+    $\lim_{n \rightarrow \infty} \log(L) = 1 \implies \lim_{n \rightarrow \infty} L = 2 \implies f(n) \in \Theta(g(n))$
+\end{proof}
 
 \subsection{$f(n) = n^{\frac{1}{\log n}},\; g(n) = n^{\frac{1}{\sqrt{\log n}}}$}
-
+$f(n) \in o(g(n))$
+\begin{proof}
+    Let $L = \frac{f(n)}{g(n)} = n^{\frac{1}{\log n} - \frac{1}{(\log n)^\frac{1}{2}}} = n^{\frac{1-(\log n)^{\frac{1}{2}}}{\log n}}$\\
+    $\log(L) = \log n (\frac{1-\sqrt{\log n}}{\log n}) = 1-\sqrt{\log n} $\\
+    $\lim_{n \rightarrow \infty} \log(L) = -\infty \implies \lim_{n \rightarrow \infty} L = 0^+ \implies f(n) \in o(g(n))$
+\end{proof}
 
 \section{Recurrence}
 
@@ -105,8 +136,8 @@ Define $R(n) = \frac{T(n)}{n^2}$:
     R(n) &= \frac{T(\frac{n}{4})}{(\frac{n}{4})^2} + \frac{32\log^{128}n}{n}\\
     &= R(\frac{n}{4}) + \frac{32\log^{128}n}{n}
 \end{align*}
-Define $S(m) = R(4^n)$:
-\begin{align*}S(m) \in O(S(0)) + m^8
+Define $S(m) = R(4^m)$:
+\begin{align*}
     S(m) &= S(m - 1) + \frac{32 \cdot 4^m (\log(4^m))^{128}}{4^{m \cdot \log_4(16)}}\\
     &= S(m -1) + \frac{32\cdot 4^m m^{128}}{16^m}\\
     &= S(m-1) + \frac{32(m)^{128}}{4^m}\\
@@ -125,22 +156,25 @@ $\lim_{n \rightarrow \infty} \frac{\frac{n^{128}}{4^n}}{1} = 0 \implies f(n) = \
 \subsection{$T(n) = 16T(\frac{n}{4}) + 64n^2 \log^8 n + 32n \log^{128} n$}
 Define $R(n) = \frac{T(n)}{n^2}$:
 \begin{align*}
-    R(n) &= \frac{16\cdot T(n)}{(\frac{n^2}{4})} + \frac{64n^2(\log(n))^8}{n^2} + \frac{32n\log^{128}n}{n^2}\\
-    R(n) &= \frac{16\cdot T(n)}{(\frac{n^2}{4})} + 64(\log(n))^8 + \frac{32\log^{128}n}{n}\\
+    R(n) &= \frac{16\cdot T(\frac{n}{4})}{(\frac{n^2}{4})} + \frac{64n^2(\log(n))^8}{n^2} + \frac{32n\log^{128}n}{n^2}\\
+    R(n) &= \frac{16\cdot T(\frac{n}{4})}{(\frac{n^2}{4})} + 64(\log(n))^8 + \frac{32\log^{128}n}{n}\\
 \end{align*}
-Define $m = 4^n$, $n = \log(m)$, $S(m) = R(4^n)$
+Define $m = 4^n$, $n = \log(m)$, $S(m) = R(4^m)$
 \begin{align*}
     S(m) &= S(m - 1) + \frac{64(4^m)^2(\log(4^m))^8}{4^{m\cdot \log_4 16}}+ \frac{32 (4^m) (\log(4^m))^{128}}{4^{m\cdot \log_4 16}}\\
     &= S(m - 1) + 64(m\log 4)^8 + \frac{32(m(\log 4))^{128}}{4^m}\\
     S(m) &\in O\left(S(0) + 64\cdot (\log 4)^8\sum_{i=1}^{m}i^8 + 32\cdot (\log 4)^{128}\sum_{i=1}^{m} \frac{i^{128}}{4^i}\right) 
 \end{align*}
 We have shown in 1.1 that $g(m) = \sum_{i=1}^{m} \frac{i^{128}}{4^i} \in O(1)$.\\
-    \[i^8 \leq \sum_{i=1}^{k} i^8 \leq k\cdot i^8 \implies h(k) = \sum_{i=1}^{k}i^8 \in \Theta(k^8)\]
+    \[\sum_{i=1}^{n} i^p = \frac{1}{p+1}\sum_{j=0}^{p} (-1)^j \binom{p+1}{j}\, B_j \, n^{p+1-j},
+    \quad p\in\mathbb{N}\] 
+    where \(B_j\) are the Bernoulli numbers.    \text{(https://en.wikipedia.org/wiki/Faulhaber)}
+    \[h(k) = \sum_{i=1}^{k}i^8 \in O(k^9)\]
     \begin{align*}
-        S(m) &\in O(S(0) + m^8)\\
+        S(m) &\in O(S(0) + m^9)\\
         &\in O(m^8)\\
-        R(n) &\in O((\log_4 n)^8)\\
-        T(n) &\in O(n^2 \log^8n)
+        R(n) &\in O((\log_4 n)^9)\\
+        T(n) &\in O(n^2 \log^9n)
     \end{align*}
 
 

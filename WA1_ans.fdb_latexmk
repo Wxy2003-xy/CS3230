@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1756631163.30961 "/home/wxy/Desktop/CS3230/WA1_ans.tex" "WA1_ans.pdf" "WA1_ans" 1756631163.60131 0
+["pdflatex"] 1756651637.1741 "/home/wxy/Desktop/CS3230/WA1_ans.tex" "WA1_ans.pdf" "WA1_ans" 1756651637.47523 0
   "/etc/texmf/web2c/texmf.cnf" 1755103353.17925 475 c0e671620eb5563b2130f56340a5fde8 ""
-  "/home/wxy/Desktop/CS3230/WA1_ans.tex" 1756631163.18732 7548 33501879646ee2dff4920d46038fd03b ""
+  "/home/wxy/Desktop/CS3230/WA1_ans.tex" 1756651637.0431 9709 7077af950e6405fdd6f42c983c990e87 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1000.tfm" 1136768653 3584 adb004a0c8e7c46ee66cad73671f37b4 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1246382020 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -211,8 +211,8 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1707919699 40399 f2c302f7d2af602abb742093540a5834 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1755103356.29607 128028 f533b797fba58d231669ea19e894e23e ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1755151943 6800792 bb14ca614cdc1af8992e085e8f19649b ""
-  "WA1_ans.aux" 1756631163.55732 2613 69a2f750ff32ba88b42df75529979ac4 "pdflatex"
-  "WA1_ans.tex" 1756631163.18732 7548 33501879646ee2dff4920d46038fd03b ""
+  "WA1_ans.aux" 1756651637.4311 2613 c6773b8c6ea824b194332a5e3b953452 "pdflatex"
+  "WA1_ans.tex" 1756651637.0431 9709 7077af950e6405fdd6f42c983c990e87 ""
   (generated)
   "WA1_ans.aux"
   "WA1_ans.log"
