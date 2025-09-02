@@ -472,21 +472,44 @@ Maps back to $R(n)$,
 \subsection*{Iterative algorithms}
 Steps
 \begin{enumerate}
-    \item Loop invariant
-    \item Initialization
-    \item Maintenance
-    \item Termination
+    \item Loop invariant: desireable conditions that holds at the start of every iteration
+    \item Initialization: the loop invariant is true at the start of the first iteration
+    \item Maintenance: If the loop invariant is true at the start of the current iteration, it is true at the start of the next iteration
+    \item Termination: The loop invariant is true at the end of the last iteration $\rightarrow$ the algorithm outputs a correct answer
 \end{enumerate}
+\subsection*{Example: Dijkstra}
+Setting: Let $G = (V, E)$ be a directed graph with strictly positive edge weights $w : E \mapsto \mathbb{R}^+.$ Fix source vertex $s \in V$, 
+$\forall v \in V, $let $dist(s, v)$ be the length of a shortest path from $s$ to $v$. If $v$ is unreachable from $s$, $dist(s,v) = \infty$.\\
+Notation: $dist(s, v)$: the actual shortest distance from $s$ to $v$; $d(v)$: the algorithm variable of current shortest possible distance from $s$ to $v$. $d(v) \geq dist(s, v)$
 \begin{lstlisting}[mathescape=true]
     Dijkstra($G(V, E), s \in V$):
         $d(s) = 0$
         $R = \{s\}$
-        while($R \notin V$):
+        while($R \neq V$):
             $v \in V \setminus R, v = \min_{u\in R}(d(u) + w(u, v))$
             $d(v) = \min_{u \in R}(d(u) + w(u, v))$
             $R \leftarrow v$
 \end{lstlisting}
-Loop invariant: 
-\[\forall u \in R, d(u) = dist(s, u)\]
-Initialization:
+\subsubsection*{Loop invariant: }
+\begin{align*}
+    &\forall v \in R, d(v) = dist(s, v)\\
+    & R \subseteq V \text{ is the set of settled vertices}
+\end{align*}
+\subsubsection*{Initialization:}
+\begin{align*}
+    d(s) = dist(s, s) = 0\\
+\end{align*}
+\subsubsection*{Maintenance:}
+Suppose $\forall u \in R, d(u) = dist(s, u)$, select $v \in V \setminus R$ such that, 
+\begin{align*}
+    v &= \min_{u \in R} (d(u) + w(u, v))\\
+    d(v) &= \min_{u \in R}(d(u) + w(u,v))\\
+\end{align*}
+Prove: $d(v) = dist(s, v)$ \\
+1. $d(v) \geq dist(s,v)$
+\begin{align*}
+    dist(s, v) &= min_{u \in V}(d(u) + w(u,v)) \leq min_{u \in R}(d(u) + w(u,v))= d(v)\\
+\end{align*} 
+2. $d(v) \leq dist(s,v)$\\
+Suppose otherwise, for the shortest path $P = s \vdash ^* v$, $\exists x \in V, x\notin R, $
 \end{document}
